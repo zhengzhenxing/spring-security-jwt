@@ -1,6 +1,7 @@
 package com.example.springsecurityjwt.dao;
 
 import com.example.springsecurityjwt.entity.ResourceBean;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -17,5 +18,6 @@ public interface ResourceMapper {
 
     int updateByPrimaryKey(ResourceBean record);
 
+    @Cacheable(value = "selectAllResource")
     List<ResourceBean> selectAllResource();
 }

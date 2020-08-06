@@ -1,5 +1,6 @@
 package com.example.springsecurityjwt.filter;
 
+import com.example.springsecurityjwt.config.TokenProperties;
 import com.example.springsecurityjwt.service.SelfUserDetailsService;
 import com.example.springsecurityjwt.utils.JwtTokenUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,12 +26,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Resource
     SelfUserDetailsService userDetailsService;
 
+    @Resource
+    private TokenProperties tokenProperties;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = httpServletRequest.getHeader("Authorization");
+        String authHeader = httpServletRequest.getHeader(tokenProperties.getAuthorizationHeaderName());
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            final String authToken = authHeader.substring("Bearer ".length());
+        if (authHeader != null && authHeader.startsWith(tokenProperties.getTokenHeaderPrefix())) {
+            final String authToken = authHeader.substring(tokenProperties.getTokenHeaderPrefix().length());
 
             String username = JwtTokenUtil.parseToken(authToken);
 

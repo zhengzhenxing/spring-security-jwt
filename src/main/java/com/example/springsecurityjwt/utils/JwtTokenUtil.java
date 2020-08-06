@@ -11,17 +11,22 @@ import java.security.PublicKey;
 import java.util.Date;
 
 public class JwtTokenUtil {
+    // keytool -genkey -alias jwt -keyalg  RSA -keysize 1024 -validity 365 -keystore jwt.jks
+    // jwt.jks放resources目录下
+    private static final String keystore = "jwt.jks";
+    private static final String password = "zzx123123";
+    private static final String alias = "jwt"; // jwt 为 命令生成整数文件时的别名
 
-    private static InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("jwt.jks"); // 寻找证书文件
+    private static InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(keystore); // 寻找证书文件
     private static PrivateKey privateKey = null;
     private static PublicKey publicKey = null;
 
     static { // 将证书文件里边的私钥公钥拿出来
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS"); // java key store 固定常量
-            keyStore.load(inputStream, "zzx123123".toCharArray());
-            privateKey = (PrivateKey) keyStore.getKey("jwt", "zzx123123".toCharArray()); // jwt 为 命令生成整数文件时的别名
-            publicKey = keyStore.getCertificate("jwt").getPublicKey();
+            keyStore.load(inputStream, password.toCharArray());
+            privateKey = (PrivateKey) keyStore.getKey(alias, password.toCharArray());
+            publicKey = keyStore.getCertificate(alias).getPublicKey();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,7 +62,7 @@ public class JwtTokenUtil {
                 .setClaims(null)
                 .setSubject(subject)
                 .setExpiration(new Date(System.currentTimeMillis() + expirationSeconds * 1000))
-                .signWith(SignatureAlgorithm.HS512, salt) // 不使用公钥私钥
+                .signWith(SignatureAlgorithm.HS256, salt) // 不使用公钥私钥
                 .compact();
     }
 

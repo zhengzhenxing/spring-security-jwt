@@ -1,7 +1,8 @@
 package com.example.springsecurityjwt.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.example.springsecurityjwt.api.AjaxResponseBody;
+import com.example.springsecurityjwt.api.CommonResult;
+import io.netty.util.CharsetUtil;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -20,13 +21,10 @@ public class AjaxAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        AjaxResponseBody responseBody = new AjaxResponseBody();
+        CommonResult result = CommonResult.unauthorized(null);
 
-        responseBody.setStatus("000");
-        responseBody.setMsg("未登录！");
-
-        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setCharacterEncoding(CharsetUtil.UTF_8.name());
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        httpServletResponse.getWriter().write(JSON.toJSONString(responseBody));
+        httpServletResponse.getWriter().write(JSON.toJSONString(result));
     }
 }
