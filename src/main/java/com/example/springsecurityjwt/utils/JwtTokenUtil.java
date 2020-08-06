@@ -17,7 +17,7 @@ public class JwtTokenUtil {
     private static final String password = "zzx123123";
     private static final String alias = "jwt"; // jwt 为 命令生成整数文件时的别名
 
-    private static InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(keystore); // 寻找证书文件
+    private static final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(keystore); // 寻找证书文件
     private static PrivateKey privateKey = null;
     private static PublicKey publicKey = null;
 
@@ -33,14 +33,9 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 使用私钥加密 token
-     *
-     * @param:
-     * @return:
-     * @auther: Tangzhiqiang
-     * @date: 2019/1/13 20:43
+     * 使用私钥 加密token
      */
-    public static String generateToken(String subject, int expirationSeconds) {
+    public static String generateToken(String subject, Long expirationSeconds) {
         return Jwts.builder()
                 .setClaims(null)
                 .setSubject(subject)
@@ -51,13 +46,8 @@ public class JwtTokenUtil {
 
     /**
      * 不使用公钥私钥 加密token
-     *
-     * @param:
-     * @return:
-     * @auther: Tangzhiqiang
-     * @date: 2019/1/13 20:41
      */
-    public static String generateToken(String subject, int expirationSeconds, String salt) {
+    public static String generateToken(String subject, Long expirationSeconds, String salt) {
         return Jwts.builder()
                 .setClaims(null)
                 .setSubject(subject)
@@ -68,11 +58,6 @@ public class JwtTokenUtil {
 
     /**
      * 通过 公钥解密token
-     *
-     * @param:
-     * @return:
-     * @auther: Tangzhiqiang
-     * @date: 2019/1/13 20:40
      */
     public static String parseToken(String token) {
         String subject = null;
@@ -82,17 +67,13 @@ public class JwtTokenUtil {
                     .parseClaimsJws(token).getBody();
             subject = claims.getSubject();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return subject;
     }
 
     /**
      * 不嘛通过 公钥解密token
-     *
-     * @param:
-     * @return:
-     * @auther: Tangzhiqiang
-     * @date: 2019/1/13 20:40
      */
     public static String parseToken(String token, String salt) {
         String subject = null;
@@ -102,6 +83,7 @@ public class JwtTokenUtil {
                     .parseClaimsJws(token).getBody();
             subject = claims.getSubject();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return subject;
     }

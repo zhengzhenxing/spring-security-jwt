@@ -2,7 +2,6 @@ package com.example.springsecurityjwt.service;
 
 import com.example.springsecurityjwt.dao.UserMapper;
 import com.example.springsecurityjwt.entity.SelfUserDetails;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
