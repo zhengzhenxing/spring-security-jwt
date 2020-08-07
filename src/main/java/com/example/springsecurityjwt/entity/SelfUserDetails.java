@@ -1,5 +1,6 @@
 package com.example.springsecurityjwt.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -73,21 +74,25 @@ public class SelfUserDetails implements Serializable, UserDetails {
     }
 
     @Override
+    @JSONField(serialize = false)
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JSONField(serialize = false)
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JSONField(serialize = false)
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JSONField(serialize = false)
     public boolean isEnabled() {
         return true;
     }
@@ -97,6 +102,7 @@ public class SelfUserDetails implements Serializable, UserDetails {
      * @return
      */
     @Override
+    @JSONField(serialize = false)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String[] authorities = roles.split(",");
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();

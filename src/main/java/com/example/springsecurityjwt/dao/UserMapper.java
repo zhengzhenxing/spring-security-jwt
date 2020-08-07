@@ -17,6 +17,6 @@ public interface UserMapper {
 
     int updateByPrimaryKey(SelfUserDetails record);
 
-    // @Cacheable(value = "selectByUsername")
+    @Cacheable(value = "selectByUsername")
     SelfUserDetails selectByUsername(@Param("username") String username);
 }
