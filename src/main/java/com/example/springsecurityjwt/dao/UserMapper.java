@@ -11,6 +11,7 @@ public interface UserMapper {
 
     int insertSelective(SelfUserDetails record);
 
+    @Cacheable(value = "selectByPrimaryKey")
     SelfUserDetails selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(SelfUserDetails record);

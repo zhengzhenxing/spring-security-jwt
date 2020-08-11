@@ -70,6 +70,13 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 所有请求必须认证
                 .authorizeRequests()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/configuration/ui").permitAll()
+                .antMatchers("/configuration/security").permitAll()
                 .anyRequest()
 
                 // 认证的逻辑
