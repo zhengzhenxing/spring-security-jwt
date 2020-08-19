@@ -40,7 +40,7 @@ public class AdminController {
     @GetMapping("userInfoByName")
     @ApiOperation("通过名字获取用户信息")
     @ApiImplicitParam(name = "name", value = "用户名称", defaultValue = "user1", required = true)
-    public CommonResult<UserDetails> userInfoByName(@RequestParam(value = "id") String name) {
+    public CommonResult<UserDetails> userInfoByName(@RequestParam(value = "name") String name) {
         UserDetails userDetail = userMapper.selectByUsername(name);
         if (userDetail == null) {
             return CommonResult.failed("找不到用户");
