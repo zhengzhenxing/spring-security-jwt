@@ -1,5 +1,6 @@
 package com.example.springsecurityjwt.service;
 
+import com.example.springsecurityjwt.utils.QueueNames;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -7,12 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-@RabbitListener(queues = "Queue1")
-public class MQReceiverBService {
+@RabbitListener(queues = QueueNames.DIRECT_QUEUE)
+public class MQDirectReceiverAService {
 
     @RabbitHandler
     public void QueueReceiver(String message) {
-        log.info("Receiver B: [{}]", message);
+        log.info("Receiver A: [{}]", message);
     }
 
 }

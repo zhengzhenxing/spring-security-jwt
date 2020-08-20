@@ -2,7 +2,6 @@ package com.example.springsecurityjwt.controller;
 
 import com.example.springsecurityjwt.api.CommonResult;
 import com.example.springsecurityjwt.entity.User;
-import com.example.springsecurityjwt.service.MQSenderService;
 import com.example.springsecurityjwt.utils.RedisUtil;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,17 +14,8 @@ public class HomeController {
     @Resource
     private RedisUtil redisUtil;
 
-    @Resource
-    private MQSenderService mqSenderService;
-
     @GetMapping({"/", "/index"})
     public CommonResult<String> index() {
-        return CommonResult.success("home index");
-    }
-
-    @PostMapping("/send-qm-msg")
-    public CommonResult<String> sendQMMsg(@RequestBody String message) {
-        mqSenderService.send(message);
         return CommonResult.success("home index");
     }
 

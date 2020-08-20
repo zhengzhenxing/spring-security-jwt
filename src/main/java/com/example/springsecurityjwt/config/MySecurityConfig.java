@@ -77,6 +77,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/configuration/ui").permitAll()
                 .antMatchers("/configuration/security").permitAll()
+                .antMatchers("/rabbitmq/**").permitAll()
                 .anyRequest()
 
                 // 认证的逻辑
