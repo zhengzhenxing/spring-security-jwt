@@ -1,13 +1,10 @@
 package com.example.springsecurityjwt.config;
 
 import com.example.springsecurityjwt.utils.QueueNames;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.amqp.core.Queue;
 
 @Configuration
 @EnableRabbit
@@ -41,6 +38,31 @@ public class RabbitmqConfig {
     @Bean
     Binding bindingExchangeTopicMessageB(Queue topicQueueB, TopicExchange exchange) {
         return BindingBuilder.bind(topicQueueB).to(exchange).with(QueueNames.TOPIC_QUEUE_B);
+    }
+
+    @Bean
+    public Queue fanoutQueueA() {
+        return new Queue(QueueNames.FANOUT_QUEUE_A);
+    }
+
+    @Bean
+    public Queue fanoutQueueB() {
+        return new Queue(QueueNames.FANOUT_QUEUE_B);
+    }
+
+    @Bean
+    FanoutExchange fanoutExchange() {
+        return new FanoutExchange(QueueNames.FANOUT_EXCHANGE);
+    }
+
+    @Bean
+    Binding bindingExchangeFanoutMessageA(Queue fanoutQueueA, FanoutExchange exchange) {
+        return BindingBuilder.bind(fanoutQueueA).to(exchange);
+    }
+
+    @Bean
+    Binding bindingExchangeFanoutMessageB(Queue fanoutQueueB, FanoutExchange exchange) {
+        return BindingBuilder.bind(fanoutQueueB).to(exchange);
     }
 
 }
