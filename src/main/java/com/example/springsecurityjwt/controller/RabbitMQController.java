@@ -1,6 +1,7 @@
 package com.example.springsecurityjwt.controller;
 
 import com.example.springsecurityjwt.api.CommonResult;
+import com.example.springsecurityjwt.service.MQDelaySenderService;
 import com.example.springsecurityjwt.service.MQDirectSenderService;
 import com.example.springsecurityjwt.service.MQFanoutSenderService;
 import com.example.springsecurityjwt.service.MQTopicSenderService;
@@ -23,6 +24,9 @@ public class RabbitMQController {
 
     @Resource
     private MQFanoutSenderService mqFanoutSenderService;
+
+    @Resource
+    private MQDelaySenderService mqDelaySenderService;
 
     @PostMapping("/direct-send")
     public CommonResult<String> directSend(@RequestBody String message) {
@@ -51,6 +55,12 @@ public class RabbitMQController {
     @PostMapping("/fanout-send")
     public CommonResult<String> fanoutSend() {
         mqFanoutSenderService.send();
+        return CommonResult.success("send success");
+    }
+
+    @PostMapping("/delay-send")
+    public CommonResult<String> delaySend() {
+        mqDelaySenderService.send();
         return CommonResult.success("send success");
     }
 

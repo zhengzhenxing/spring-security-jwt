@@ -6,6 +6,9 @@ import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 @EnableRabbit
 public class RabbitmqConfig {
@@ -14,6 +17,8 @@ public class RabbitmqConfig {
     public Queue queue() {
         return new Queue(QueueNames.DIRECT_QUEUE);
     }
+
+    // 通配符消息
 
     @Bean
     public Queue topicQueueA() {
@@ -40,6 +45,8 @@ public class RabbitmqConfig {
         return BindingBuilder.bind(topicQueueB).to(exchange).with(QueueNames.TOPIC_QUEUE_B);
     }
 
+    // 广播消息
+
     @Bean
     public Queue fanoutQueueA() {
         return new Queue(QueueNames.FANOUT_QUEUE_A);
@@ -63,6 +70,25 @@ public class RabbitmqConfig {
     @Bean
     Binding bindingExchangeFanoutMessageB(Queue fanoutQueueB, FanoutExchange exchange) {
         return BindingBuilder.bind(fanoutQueueB).to(exchange);
+    }
+
+    // 延迟消息
+
+    @Bean
+    public CustomExchange delayExchange() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-delayed-type", "direct");
+        return new CustomExchange(QueueNames.DELAYED_EXCHANGE, "x-delayed-message", true, false, args);
+    }
+
+    @Bean
+    public Queue delayQueue() {
+        return new Queue(QueueNames.DELAYED_QUEUE, true);
+    }
+
+    @Bean
+    public Binding bindingExchangeDelayMessage(Queue delayQueue, CustomExchange exchange) {
+        return BindingBuilder.bind(delayQueue).to(exchange).with(QueueNames.DELAYED_QUEUE).noargs();
     }
 
 }
